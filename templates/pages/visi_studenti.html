@@ -1,0 +1,45 @@
+{% extends "main.html" %}
+{% block content %}
+<br>
+<table class="table table-bordered text-center">
+    <tr>
+        <th>Vārds</th>
+        <th>Uzvārds</th>
+        <th>Kods</th>
+        {% for k in kursi %}
+             <th>{{k.module_name}} <a href="{% url 'kursi_labot_kursu' kursa_id=k.module_code %}"><i class="bi bi-pencil-square"></i></a></th>
+        {% endfor %}
+        <th>Vidējais</th>
+        <th>Statuss</th>
+        <th>Labot studentu</th>
+    </tr>
+    {% for st in studenti %}
+        <tr>
+            <td>{{st.forename}}</td>
+            <td>{{st.surname}}</td>
+            <td>{{st.student_no}} </td>
+                {% for k in kursi %}
+                    <td>
+                            {% for atz in atzimes %}
+                                {% if st.student_no == atz.student_no and k.module_code == atz.module_code %}
+                                    
+                                    {% if atz.mark == 0 %}
+                                        N
+                                    {% else %}
+                                        {{atz.mark}}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        <a href="{% url 'studenti_labot_atzimi' kursa_id=k.module_code studenta_kods=st.student_no %}"><i class="bi bi-pencil-square"></i></a>
+                    </td>
+                {% endfor %}
+                <td>{{st.videjais}}</td>  
+                <td>{{st.statuss}}</td>
+                <td><a href="{% url 'studenti_labot' studenta_nr=st.student_no %}"><i class="bi bi-pencil-square"></i></a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+<a class="btn btn-success" href="{% url 'kursi_labot_kursu' %}">Jauns Kurss</a>
+<a class="btn btn-success" href="{% url 'studenti_labot' %}">Jauns Students</a>
+{% endblock %}
