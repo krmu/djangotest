@@ -8,7 +8,13 @@
         <th>Kods</th>
         <th>Statuss</th>
         {% for k in kursi %}
-             <th>{{k.module_name}} <a href="{% url 'kursi_labot_kursu' kursa_id=k.module_code %}"><i class="bi bi-pencil-square"></i></a></th>
+            <th>{{k.module_name}} <a href="{% url 'kursi_labot_kursu' kursa_id=k.module_code %}"><i class="bi bi-pencil-square"></i></a>
+            {% if k.aktivs %}
+                <i class="bi bi-eye"></i>
+            {%else%}
+                <i class="bi bi-eye-slash"></i>
+            {% endif %}
+            </th>
         {% endfor %}
         <th>Vidējais</th>
         <th>Statuss</th>

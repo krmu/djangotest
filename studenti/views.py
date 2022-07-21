@@ -15,7 +15,7 @@ def index(request):
     for st in students.objects.all():
         studenta_dati = {"ID":st.id,"vards":st.surname,"uzvards":st.forename,"uzvards":st.forename,"aktivs":st.aktivs,"kods":st.student_no,"kursu_dati":{},"papildus_info":[]}
         summa = 0
-        vertejumi = 1
+        vertejumi = 0
         statuss = "Atbilst"
         for kurss in visi_kursi:
             vertejums = None
@@ -23,13 +23,15 @@ def index(request):
                 vertejums = marks.objects.get(student_no=st.student_no,module_code=kurss.module_code)
             except marks.DoesNotExist:   
                 pass # mums baigi neinteresē iznākums.
-            if vertejums is not None:
-                summa = summa + vertejums.mark
+            if vertejums is not None and kurss.aktivs and kurss.var_atzimes:
+                summa = vertejums.mark + summa
                 vertejumi = vertejumi + 1
                 if vertejums.mark == 0 and statuss == "Atbilst":
                     statuss = "Parāds"
             studenta_dati['kursu_dati'][kurss.module_code] = {"atzime":vertejums}
-        studenta_dati['papildus_info'] = {"videjais":format(summa/vertejumi, '.2f'),"status":statuss}
+        if vertejumi == 0:
+            vertejumi = 1 # tiem, kuriem nav atzīmju
+        studenta_dati['papildus_info'] = {"videjais": format(summa/vertejumi, '.2f'),"status":statuss}
         dati.append(studenta_dati)
     #return print(dati)
     return render(request, "pages/visi_studenti.html", {"dati":dati,"kursi":visi_kursi,"title":"Studentu Sākumlapa"})
