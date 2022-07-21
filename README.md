@@ -28,6 +28,8 @@ Pamatā bija lietots MySQL, var uz citas bāzes likt.
         id (int 11)
         module_code varchar(8)
         module_name varchar(50)
+        var_atzimes tinyint(1)
+        aktivs tinyint(1)
     marks
         id int(11)
         student_no varchar(10)
@@ -56,6 +58,8 @@ Pamatā bija lietots MySQL, var uz citas bāzes likt.
 ![Viss kopā](/static/img/showcase/viss_kopa.png "Title")
 ## Jauns students
 ![Jauns students](/static/img/showcase/jauns_students.png "Title")
+## Jauns Kurss
+![Jauns Kurss](/static/img/showcase/jauns_kurss.png "Title")
 ## Atzīmju ievade
 ![Jauns students](/static/img/showcase/labot_atzimi.png "Title")
 

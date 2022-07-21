@@ -6,6 +6,7 @@
         <th>Vārds</th>
         <th>Uzvārds</th>
         <th>Kods</th>
+        <th>Statuss</th>
         {% for k in kursi %}
              <th>{{k.module_name}} <a href="{% url 'kursi_labot_kursu' kursa_id=k.module_code %}"><i class="bi bi-pencil-square"></i></a></th>
         {% endfor %}
@@ -13,29 +14,41 @@
         <th>Statuss</th>
         <th>Labot studentu</th>
     </tr>
-    {% for st in studenti %}
+    {% for st in dati %}
         <tr>
-            <td>{{st.forename}}</td>
-            <td>{{st.surname}}</td>
-            <td>{{st.student_no}} </td>
-                {% for k in kursi %}
+            <td>{{st.vards}}</td>
+            <td>{{st.uzvards}}</td>
+            <td>{{st.kods}} </td>
+            <td>{{st.aktivs|yesno:"Aktīvs,Neaktīvs"}} </td>
+            {% for k in kursi %}
+                {% if st.aktivs %}
                     <td>
-                            {% for atz in atzimes %}
-                                {% if st.student_no == atz.student_no and k.module_code == atz.module_code %}
-                                    
-                                    {% if atz.mark == 0 %}
-                                        N
-                                    {% else %}
-                                        {{atz.mark}}
+                        {% for kods,vertiba in st.kursu_dati.items %}
+                            {% if kods == k.module_code %}
+                                {% if vertiba.atzime is not None %}
+                                    {% if vertiba.atzime.mark == 0 %}
+                                        <span class="text-danger bold">N</span>
+                                    {%else%}
+                                        {{vertiba.atzime.mark}}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        <a href="{% url 'studenti_labot_atzimi' kursa_id=k.module_code studenta_kods=st.student_no %}"><i class="bi bi-pencil-square"></i></a>
+                                {% endif %} 
+                            {% endif %}
+                        {% endfor %}
+                        {% if k.var_atzimes and k.aktivs %}
+                         <a href="{% url 'studenti_labot_atzimi' kursa_id=k.module_code studenta_kods=st.kods %}"><i class="bi bi-pencil-square"></i></a>
+                        {% endif %}
                     </td>
-                {% endfor %}
-                <td>{{st.videjais}}</td>  
-                <td>{{st.statuss}}</td>
-                <td><a href="{% url 'studenti_labot' studenta_nr=st.student_no %}"><i class="bi bi-pencil-square"></i></a></td>
+                {%else%}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+            {% if st.aktivs %}
+                <td>{{st.papildus_info.videjais}}</td>
+                <td>{{st.papildus_info.status}}</td>
+            {%else%}
+                    <td colspan="2"></td>
+            {% endif %}
+            <td><a href="{% url 'studenti_labot' studenta_nr=st.kods %}"><i class="bi bi-pencil-square"></i></a></td>
         </tr>
     {% endfor %}
 </table>

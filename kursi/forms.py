@@ -8,5 +8,5 @@ class kursa_edit_form(ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
    class Meta:
         model = modules
-        fields = ['module_code','module_name']
+        fields = '__all__'
         
