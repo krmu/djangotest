@@ -1,0 +1,62 @@
+{% extends "main.html" %}
+ 
+{% block content %}
+    <div class="alert alert-info"> 
+    Parasts Django Api tests, kurā savieto Front-End ar Back-end. Tiek veikts izsaukums uz Djangoo moduli /api/. <br>
+    Tur veic izsaukumu uz http://universities.hipolabs.com
+    </div>
+    <label>Valsts</label> <input type="text" id="valsts" class="form-control">
+    <button onclick="meklet()" class="btn btn-success">Meklēt</button> 
+    <div class="spinner-border" id="laadee" style="display:none" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div id="atbilde"></div>
+        <table id="tabula" class="table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Valsts</th>
+                    <th>Nosaukums</th>
+                    <th>Kods</th>
+                    <th>Mājaslapa</th>
+                </tr>
+            </thead>
+            <tbody id="atbildes_tabula">
+
+            </tbody>
+        </table>
+     <script>
+        //meklet_uni_api
+        function meklet(){
+            var teksts = $("#valsts").val();
+            if(teksts == ""){
+                return alert("Nav ierakstīti dati..");
+            }
+            $("#tabula").show();
+            $("#laadee").show();
+            $.ajax({
+                type:"POST",
+                data: { 
+                    csrfmiddlewaretoken: "{{ csrf_token }}", // Savādāk aizmugure ar mums nerunās
+                },
+                url: "{% url 'meklet_uni_api' %}"+encodeURIComponent(teksts), 
+                success: function(result){
+                    result = JSON.parse(result);
+                    if(result.error) return alert(result.error);
+                    var rinda = "";
+                    $("#atbildes_tabula").html("");
+                    $.each(result, function(index) {
+                        rinda += "<tr>";
+                        rinda += "<td>"+result[index].country+"</td>";
+                        rinda += "<td>"+result[index].name+"</td>";
+                        rinda += "<td>"+result[index].alpha_two_code+"</td>";
+                        rinda += "<td>"+result[index].web_pages[0]+"</td>";
+                        $("#atbildes_tabula").append(rinda);
+                        rinda ="";
+                    });
+                    $("#laadee").hide();
+                }
+            });
+        }
+         
+     </script>
+{% endblock %}

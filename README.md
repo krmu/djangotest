@@ -17,7 +17,7 @@ Django testa vietne, par bāzi ņemta studentu apmācības sistēma.
     /darbinieki/ - Visi sistēmas darbinieki
     /darbinieki/<DarbiniekaId>/labot - Labot darbinieku
     /darbinieki/jauns - Jauns darbinieks
-
+    /api/universitates/meklet/valsts/<valsts> - Apis, kurš meklē HyppoLabs sarakstā visas pieejamās universitātes pēc dotās valsts
 
 Pamatā bija lietots MySQL, var uz citas bāzes likt.
 # Tabulas:
@@ -99,3 +99,11 @@ Par login sistēmas pamatu ņemts:  https://www.codingforentrepreneurs.com/blog/
 Lai uztaisītu jaunu superlietotāju - python manage.py createsuperuser
 
 
+# API
+
+Adrese ir /api/
+Lai darbotos vajag izmantot
+data: { 
+    csrfmiddlewaretoken: "{{ csrf_token }}",
+},
+CSRF tokens, kuru izmanto uz POST metodēm, pats Django pārbauda, ja neder atbild ar 403.
