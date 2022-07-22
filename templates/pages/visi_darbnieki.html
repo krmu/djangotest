@@ -1,0 +1,30 @@
+{% extends "main.html" %}
+{% block content %}
+<br>
+<table class="table table-bordered text-center">
+        <tr>
+            <th>Vārds</th>
+            <th>Uzvārds</th>
+            <th>Pēdējā autorizācija</th>
+            <th>Lietotājvārds</th>
+            <th>Aktīvs</th>
+            <th>Ir admins</th>
+            <th>Ir staff</th>
+            <th>*</th>
+        </tr>
+        {% for d in darbinieki %}
+        <tr>
+            <td>{{d.vards}}</td>
+            <td>{{d.uzvards}}</td>
+            <td>{{d.last_login}}</td>
+            <td>{{d.username}}</td>
+            <td>{{d.is_active}}</td>
+            <td>{{d.admin}}</td>
+            <td>{{d.is_staff}}</td>
+            <td><a href="{% url 'darbinieku_labot' darbinieka_id=d.id %}"><i class="bi bi-pencil-square"></i></a></td>
+        </tr>
+        {% endfor %}
+     
+</table>
+
+{% endblock %}

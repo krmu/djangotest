@@ -4,16 +4,57 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href='{% url "sakumlapa" %}'>Sākums</a>
+          <a class="nav-link " aria-current="page" href='{% url "sakumlapa" %}'> <i class="bi bi-house-door"></i> Sākums</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href='{% url "apitest_universitates" %}'>Api universitates</a>
+          <a class="nav-link" aria-current="page" href='{% url "apitest_universitates" %}'><i class="bi bi-modem"></i> Api universitates</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href='{% url "studenti_index" %}'>Studentu Sistēma</a>
-        </li>
+        {% if user.is_authenticated %}
+          {% if user.staff or user.admin %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-people"></i> Studenti un atzīmes
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href='{% url "studenti_index" %}'>Visas atzīmes</a></li>
+                <li><a class="dropdown-item" href='{% url "studenti_visi" %}'>Visi studenti</a></li>
+                <li><a class="dropdown-item" href='{% url "studenti_labot" %}'>Jauns students</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-journal-check"></i> Kursi
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href='{% url "visi_kursi" %}'>Visi kursi</a></li>
+                <li><a class="dropdown-item" href='{% url "kursi_labot_kursu" %}'>Jauns kurss</a></li>
+              </ul>
+            </li>
+          {%endif%}
+          {% if user.admin %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-gear"></i> Darbinieki
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li class="nav-item">
+                  <a class="dropdown-item" aria-current="page" href='{% url "visi_darbinieki" %}'>Darbinieki</a>
+                </li>
+                <li><a class="dropdown-item" href='{% url "jauns_darbinieks" %}'>Jauns darbinieks</a></li>
+              </ul>
+            </li>
+          {%endif%}
+          </ul>
+          <span class="navbar-text">
+              Sveiks, {{ user.get_full_name }} <a href='{% url "iziet" %}'>Iziet</a>
+          </span>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href='{% url "login" %}'>Login</a>
+          </li>
+        {%endif%}
     </div>
   </div>
 </nav>

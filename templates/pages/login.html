@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% block content %}
+
+{% if msg %}
+    <div class="alert alert-danger">{{msg}}</div>
+{%endif%}
+<form method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" class="btn btn-primary">
+</form>
+{% endblock %}

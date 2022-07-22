@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+{% block content %}
+<table class="table table-bordered text-center">
+    <tr>
+        <th>ID</th>
+        <th>Vārds</th>
+        <th>Uzvārds</th>
+        <th>Studenta Nr.</th>
+        <th>Aktīvs</th>
+        <th>*</th>
+    </tr>
+    {% for d in data %}
+    <tr>
+        <td>{{d.id}}</td>
+        <td>{{d.forename}}</td>
+        <td>{{d.surname}}</td>
+        <td>{{d.student_no}}</td>
+        <td>{{d.aktivs}}</td>
+        <td><a href="{% url 'studenti_labot' studenta_nr=d.student_no %}"><i class="bi bi-pencil-square"></i></a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

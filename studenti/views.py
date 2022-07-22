@@ -1,4 +1,4 @@
-import math
+from django.contrib.auth.decorators import login_required,user_passes_test
 from django.shortcuts import redirect, render
 from studenti.forms import studenta_edit_form
 
@@ -7,7 +7,8 @@ from kursi.models import modules
 from atzimes.models import marks
 
 # Create your views here.
-
+@login_required(login_url='/autorizacija/')
+@user_passes_test(lambda u: u.is_staff,login_url='/nav-piekluves/')
 def index(request):
     visi_kursi = modules.objects.all()
     dati = []
@@ -35,6 +36,8 @@ def index(request):
         dati.append(studenta_dati)
     #return print(dati)
     return render(request, "pages/visi_studenti.html", {"dati":dati,"kursi":visi_kursi,"title":"Studentu Sākumlapa"})
+@login_required(login_url='/autorizacija/')
+@user_passes_test(lambda u: u.is_staff,login_url='/nav-piekluves/')
 def labot_studentu(request,studenta_nr=None):
     st = students(student_no=studenta_nr) 
     try:
@@ -48,3 +51,8 @@ def labot_studentu(request,studenta_nr=None):
     else:
        form = studenta_edit_form(instance=st)   
     return render(request, "pages/labot_studentu.html", {"form":form,"title":"Labot studentu"})
+
+@login_required(login_url='/autorizacija/')
+@user_passes_test(lambda u: u.is_staff,login_url='/nav-piekluves/')
+def skatit_visus(request):  
+    return render(request, "pages/skatit_visus_studenti.html", {"data":students.objects.order_by("surname").all(),"title":"Skatīt visus"})

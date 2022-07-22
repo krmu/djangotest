@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+{% block content %}
+<table class="table table-bordered text-center">
+    <tr>
+        <th>ID</th>
+        <th>Nosaukums</th>
+        <th>Kods</th>
+        <th>Atzīmju ievade</th>
+        <th>Aktīvs</th>
+        <th>*</th>
+    </tr>
+    {% for d in data %}
+    <tr>
+        <td>{{d.id}}</td>
+        <td>{{d.module_name}}</td>
+        <td>{{d.module_code}}</td>
+        <td>{{d.var_atzimes}}</td>
+        <td>{{d.aktivs}}</td>
+        <td><a href="{% url 'kursi_labot_kursu' kursa_id=d.module_code %}"><i class="bi bi-pencil-square"></i></a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

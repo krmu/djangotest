@@ -3,9 +3,12 @@ from atzimes.forms import atzimju_edit_form
 from studenti.models import students
 from kursi.models import modules
 from atzimes.models import marks
+from django.contrib.auth.decorators import login_required,user_passes_test
 
-# Create your views here.
 
+
+@login_required(login_url='/autorizacija/')
+@user_passes_test(lambda u: u.is_staff,login_url='/nav-piekluves/')
 def labot_atzimi(request,kursa_id,studenta_kods):
     atzime = marks() 
     try:
