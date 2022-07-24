@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-c(nr*+q7)+f%j$x05wi)clz36(yp5dei8)jc7n==ak-6m4ev5#
 DEBUG = True
 ADMIN_ENABLED = False
 ALLOWED_HOSTS = []
-
+PROJEKTA_MAPE = "/var/www/web/"
 # Application definition
 
 INSTALLED_APPS = [
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'djanogunidb',
+        'NAME': str(BASE_DIR)+'/djanogunidb',
     }
 }
 

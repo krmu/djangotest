@@ -132,15 +132,10 @@ Pieliekam klāt stila failu mapi, lai saucot adresi /static/ tiktu izsaukta mūs
 Require all granted
 </Directory>`
 
-Mapē /web/web/wsgi.py failā pieliek klāt rindas.
-import sys
-sys.path.append('/var/www/web')
-sys.path.append('/var/www/web/web')
-Pasakām, kur projekts dzīvo.
 
 Svarīgi:
 
-Datubāzes failam jānorāda pilns ceļš, ja lieto sqllite.
+Datubāzes failam jānorāda pilns ceļš, ja lieto sqllite, to šajā gadījumā nosaka automātiski.
 Views.py izkomentējam ārā rindu #from asyncio.windows_events import NULL tā raisa problēmu, ja darbojas ar linux vidi.
 
 # Testēts šādās vidēs
