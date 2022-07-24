@@ -107,3 +107,50 @@ data: {
     csrfmiddlewaretoken: "{{ csrf_token }}",
 },
 CSRF tokens, kuru izmanto uz POST metodēm, pats Django pārbauda, ja neder atbild ar 403.
+
+
+# Ja laiž uz servera ar Apache
+
+Apachei vajag moduli - libapache2-mod-wsgi-py3, to instalē `sudo apt-get install libapache2-mod-wsgi-py3`
+Tad labojam failu, kurā dzīvo weba konfigurācija jeb `/etc/apache2/sites-available/000-default.conf`
+Tur jāpieliek šādas rindas:
+
+WSGIScriptAlias / /var/www/web/web/wsgi.py # Mūsu servera faila pamata moduļa atrašanās vieta sk. šo pašu projektu.
+
+Sakām, ka mūsu galvenais modulis ir tas,kurš darbina wsgi.py failus, ļaujam izmantot failus
+`<Directory /var/www/web/web>
+    <Files wsgi.py>
+        Order deny,allow
+        Allow from all
+    </Files>
+</Directory>`
+
+Pieliekam klāt stila failu mapi, lai saucot adresi /static/ tiktu izsaukta mūsu iekšēja stilu mape. 
+
+`Alias /static/ "/var/www/web/static/"
+<Directory "/var/www/web/static">
+Require all granted
+</Directory>`
+
+Mapē /web/web/wsgi.py failā pieliek klāt rindas.
+import sys
+sys.path.append('/var/www/web')
+sys.path.append('/var/www/web/web')
+Pasakām, kur projekts dzīvo.
+
+Svarīgi:
+
+Datubāzes failam jānorāda pilns ceļš, ja lieto sqllite.
+Views.py izkomentējam ārā rindu #from asyncio.windows_events import NULL tā raisa problēmu, ja darbojas ar linux vidi.
+
+# Testēts šādās vidēs
+
+Windows 11
+DigitalOcean [1]
+    1 GB Memory
+    25 GB Disk
+    Debian 11 x64
+DigitalOcean [2]
+    512 MB  Memory
+    10 GB Disk
+    Debian 11 x64
