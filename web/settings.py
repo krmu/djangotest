@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR)+'/djanogunidb',
+        'NAME': os.path.join(BASE_DIR, 'djanogunidb'),
     }
 }
 
